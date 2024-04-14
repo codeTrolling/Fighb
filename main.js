@@ -10,7 +10,7 @@ players.push(new Player({
     x: 50,
     y: 50,
     health: 100,
-    moveSpeed: 10
+    moveSpeed: 5
 }));
 
 // called every frame
@@ -19,7 +19,9 @@ function Tick(){
     fillCanvas();
 
     players.forEach((player)=>{
-        player.render();
+        player.update();
     })
 }
 let gameloop = setInterval(Tick, (1/fpsCap) * 1000);
+
+export { fpsCap, players };

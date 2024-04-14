@@ -1,21 +1,25 @@
-import { ctx, canvas } from "./canvas.js";
+import { ctx, canvas, fillCanvas } from "./canvas.js";
 import Player from "./classes/Player.js";
 
-// const canvas = document.getElementById("canvas");
-// export const ctx = canvas.getContext("2d");
 
-
-// ctx.fillStyle = "white";
-// ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+let fpsCap = 60;
+// keep every instance of a player here so it gets properly rendered in Tick function
 let players = [];
 
-const p1 = new Player({
+players.push(new Player({
     x: 50,
     y: 50,
     health: 100,
     moveSpeed: 10
-})
+}));
 
-players.push(p1);
-p1.render();
+// called every frame
+function Tick(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    fillCanvas();
+
+    players.forEach((player)=>{
+        player.render();
+    })
+}
+let gameloop = setInterval(Tick, (1/fpsCap) * 1000);

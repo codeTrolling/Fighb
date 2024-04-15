@@ -10,16 +10,17 @@ class Player{
         this.moveSpeed = moveSpeed;
         this.width = width;
         this.height = height;
-        this.gravity = gravity;
+        // how strongly gravity affects this
+        this.gravityMultiplyer = gravity;
         this.isGrounded = false;
         this.timeFalling = 0;
+        this.jumpForce = 10;
     }
 
     // used to render the player. Should be called every frame;
     render(){
         ctx.fillStyle = "blue";
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-        console.log(this.y + " > " + canvas.height);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     moveX(){
@@ -41,16 +42,21 @@ class Player{
         if(!this.isGrounded){
             // this is a formula i found online. don't question it. TEMP VALUE: this.y before everything else. not used right now though
             // this.velocity.y = this.velocity.y * this.time + 0.5 * 9.81*(this.time*this.time);
-            this.velocity.y = this.timeFalling;
-            this.timeFalling += (1/fpsCap) * 30
+            this.velocity.y += this.timeFalling * this.gravityMultiplyer;
+            this.timeFalling += (1/fpsCap) 
             if(this.y + this.height > canvas.height){
                 this.isGrounded = true;
                 this.y = canvas.height - this.height;
                 this.velocity.y = 0;
+                this.timeFalling = 0;
             }
         }
-        else{
-            this.timeFalling = 0;
+    }
+
+    jump(){
+        if(this.isGrounded){
+            this.velocity.y += -1 * this.jumpForce;
+            this.isGrounded = false;
         }
     }
 

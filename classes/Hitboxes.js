@@ -1,3 +1,5 @@
+// more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
+
 class Hitbox{
     constructor({x=0, y=0, width=10, height=10, attachment}){
         this.x = attachment ? attachment.x + x : x;
@@ -16,8 +18,25 @@ class Hitbox{
         this.y = attachment.y;
     }
 
-    addRelativePosition(x, y){
+    addToPosition(x=0, y=0){
+        if(!x || !y || typeof(x) != number || typeof(y) != number) {throw "Invalid arguments."}
+        this.x += x;
+        this.y += y;
+    }
+
+    // sets absolute position of the hitbox regardless of parent element
+    setPosition(x, y){
+        if(!x || !y || typeof(x) != number || typeof(y) != number) {throw "Invalid arguments."}
+        this.x = x;
+        this.y = y;
+    }
+    
+    // relative position means relative to the parent this element is attached to. Parent is usually an object of class Player
+    setRelativePosition(x, y){
         if(!this.attachment) {throw "This element is not attached to a parent. See setupAttachment()."}
+        if(!x || !y || typeof(x) != number || typeof(y) != number) {throw "Invalid arguments."}
+        this.x = this.attachment.x + x;
+        this.y = this.attachment.y + y;
     }
 
 }

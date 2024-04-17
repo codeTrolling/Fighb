@@ -1,14 +1,14 @@
+import { ctx } from '../canvas.js'
+
 // more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
 
 class Hitbox{
-    constructor({x=0, y=0, width=10, height=10, attachment}){
+    constructor({x=0, y=0, attachment = undefined}){
         this.x = attachment ? attachment.x + x : x;
         this.y = attachment ? attachment.y + y : y;
-        // if you want to make a circle do not use these. circles use a single radius instead. I'm currently not thinking about adding circle hitboxes so you should manually create them if you need them.
-        this.width = width;
-        this.height = height;
         this.attachment = attachment;
         this.isVisible = true;
+        this.isActive = true;
     }
 
     setupAttachment(attachment){
@@ -39,4 +39,23 @@ class Hitbox{
         this.y = this.attachment.y + y;
     }
 
+    // TODO: Add a method to detect collision.
+
 }
+
+class SquareHitbox extends Hitbox{
+    constructor({x, y, width, height, attachment}) {
+        super(x, y, attachment);
+        this.width = width;
+        this.height = height;
+    }
+
+    // not tested! test next time!!!
+    render(){
+        ctx.strokeStyle = "green";
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+    }
+
+}
+
+export { SquareHitbox };

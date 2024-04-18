@@ -9,6 +9,7 @@ class Hitbox{
         this.attachment = attachment;
         this.isVisible = true;
         this.isActive = true;
+        this.interval;
     }
 
     setupAttachment(attachment){
@@ -39,6 +40,17 @@ class Hitbox{
         this.y = this.attachment.y + y;
     }
 
+    // sets if this hitbox is active or not
+    setIsActive(isActive){
+        this.isActive = isActive;
+        if(isActive){
+            // for tomorrow: setInterval where it checks for collision every frame
+        }
+        else if(this.interval){
+            clearInterval(this.interval);
+        }
+    }
+
     // TODO: Add a method to detect collision.
 
 }
@@ -52,8 +64,10 @@ class SquareHitbox extends Hitbox{
 
     // not tested! test next time!!!
     render(){
-        ctx.strokeStyle = "green";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        if(this.isVisible){
+            ctx.strokeStyle = "green";
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+        }
     }
 
 }

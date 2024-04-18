@@ -1,5 +1,6 @@
 import { ctx, canvas, fillCanvas } from "./canvas.js";
 import Player from "./classes/Player.js";
+import { SquareHitbox } from "./classes/Hitboxes.js";
 
 
 let fpsCap = 60;

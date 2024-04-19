@@ -1,5 +1,6 @@
 import { ctx, canvas } from "../canvas.js";
 import { fpsCap } from "../main.js";
+import { SquareHitbox } from "./Hitboxes.js";
 
 class Player{
     constructor({x=0, y=0, health=100, moveSpeed=5, width=50, height=100, gravity = 1}){
@@ -15,6 +16,7 @@ class Player{
         this.isGrounded = false;
         this.timeFalling = 0;
         this.jumpForce = 10;
+        this.attachedElements = [];
     }
 
     // used to render the player. Should be called every frame;
@@ -67,6 +69,10 @@ class Player{
         this.moveX();
         this.gravityEffect();
         this.y += this.velocity.y;
+        this.attachedElements.forEach((element) => {
+            element.setRelativePosition(element.relativeX, element.relativeY);
+            element.render();
+        })
     }
 }
 

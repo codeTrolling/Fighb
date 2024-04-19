@@ -14,6 +14,15 @@ players.push(new Player({
     moveSpeed: 5
 }));
 
+let testHitbox = new SquareHitbox({
+    x: 0,
+    y: 0,
+    width: 50,
+    height: 50
+})
+
+testHitbox.setupAttachment(players[0]);
+
 // called every frame
 function Tick(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);

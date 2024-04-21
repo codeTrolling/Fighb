@@ -14,14 +14,16 @@ players.push(new Player({
     moveSpeed: 5
 }));
 
-let testHitbox = new SquareHitbox({
-    x: 0,
-    y: 0,
-    width: 50,
-    height: 50
-})
+// keep all hitboxes here. Looking for collision will loop over this array
+let hitboxes = [];
+hitboxes.push(new SquareHitbox({}));
 
-testHitbox.setupAttachment(players[0]);
+hitboxes[0].setupAttachment(players[0]);
+hitboxes[0].width = hitboxes[0].attachment.width;
+hitboxes[0].height = hitboxes[0].attachment.height;
+
+//test
+hitboxes.push(new SquareHitbox({x: 400, y: 0, width: 100, height:100}));
 
 // called every frame
 function Tick(){
@@ -30,8 +32,10 @@ function Tick(){
 
     players.forEach((player)=>{
         player.update();
+        hitboxes[1].render();
+        console.log(hitboxes[1].x)
     })
 }
-let gameloop = setInterval(Tick, (1/fpsCap) * 1000);
+let gameLoop = setInterval(Tick, (1/fpsCap) * 1000);
 
-export { fpsCap, players };
+export { fpsCap, players, hitboxes };

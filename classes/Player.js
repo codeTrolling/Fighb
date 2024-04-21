@@ -70,6 +70,7 @@ class Player{
         this.gravityEffect();
         this.y += this.velocity.y;
         this.attachedElements.forEach((element) => {
+            // this shouldn't be called every update. currently just testing
             element.setRelativePosition(element.relativeX, element.relativeY);
             element.render();
         })

@@ -24,6 +24,8 @@ hitboxes[0].height = hitboxes[0].attachment.height;
 
 //test
 hitboxes.push(new SquareHitbox({x: 400, y: 0, width: 100, height:100}));
+hitboxes[1].x = 400;
+hitboxes[1].y = canvas.height - hitboxes[1].height - 100;
 
 // called every frame
 function Tick(){
@@ -33,7 +35,7 @@ function Tick(){
     players.forEach((player)=>{
         player.update();
         hitboxes[1].render();
-        console.log(hitboxes[1].x)
+        //console.log(hitboxes[1].x)
     })
 }
 let gameLoop = setInterval(Tick, (1/fpsCap) * 1000);

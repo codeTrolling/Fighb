@@ -34,12 +34,57 @@ class Hitbox{
                 if(hitbox.isActive && hitbox != this){
                     if(this.x + this.width >= hitbox.x && this.x <= hitbox.x + hitbox.width && this.y + this.height >= hitbox.y && this.y <= hitbox.y + hitbox.height){
                         if(this.solidCollision && hitbox.solidCollision){
+
+                            // check where the collision occured (top, bottom, right or left)
+                            let thisHalfWidth = this.width / 2;
+                            let thisHalfHeight = this.height / 2;
+                            let collisionHalfWidth = hitbox.width / 2;
+                            let collisionHalfHeight = hitbox.height/2;
+                            let thisCenterX = this.x + thisHalfWidth;
+                            let thisCenterY = this.y + thisHalfHeight;
+                            let collisionCenterX = hitbox.x + collisionHalfWidth;
+                            let collisionCenterY = hitbox.y + collisionHalfHeight;
+
+                            // Calculate the distance between centers
+                            let diffX = thisCenterX - collisionCenterX;
+                            let diffY = thisCenterY - collisionCenterY;
+
+                            // Calculate the minimum distance needed for a collision to occur
+                            let minDistX = thisHalfWidth + collisionHalfWidth;
+                            let minDistY = thisHalfHeight + collisionHalfHeight;
+
+                            // Calculate the depth of collision for both the X and Y axis
+                            let depthX = diffX > 0 ? minDistX - diffX : -minDistX - diffX;
+                            let depthY = diffY > 0 ? minDistY - diffY : -minDistY - diffY; 
+                                              
+                            // don't mind the duplicationg code
                             if(this.attachment != undefined){
-                                if(this.attachment.velocity.x > 0){
-                                    this.attachment.x = hitbox.x - this.attachment.width;
-                                }
-                                else{
-                                    this.attachment.x = hitbox.x + hitbox.width;
+                                if(depthX != 0 && depthY != 0){
+                                    if(Math.abs(depthX) < Math.abs(depthY)){
+                                        // Collision along the X axis
+                                        if(depthX > 0){
+                                            // Left side collision
+                                            this.attachment.x = hitbox.x + hitbox.width;
+                                            console.log("left collision");
+                                        }
+                                        else{
+                                            // Right side collision
+                                            this.attachment.x = hitbox.x - this.attachment.width;
+                                            console.log("righjt collision");
+                                        }
+                                    }
+                                    else{
+                                        // Collision along the Y axis
+                                        if(depthY > 0){
+                                            // Top side collision
+                                            this.attachment.y = hitbox.y + hitbox.height;
+                                            console.log("top collision");
+                                        }
+                                        else{
+                                            // Bottom side collision
+                                            this.attachment.y = hitbox.y - this.attachment.height;
+                                        }
+                                    }   
                                 }
                             }
                         }

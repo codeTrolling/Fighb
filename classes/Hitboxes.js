@@ -16,6 +16,7 @@ class Hitbox{
         this.interval;
         this.relativeX = 0;
         this.relativeY = 0;
+        this.collidingWith = [];
     }
 
     setupAttachment(attachment){
@@ -32,7 +33,12 @@ class Hitbox{
             hitboxes.forEach((hitbox)=>{
                 // checks for collision
                 if(hitbox.isActive && hitbox != this){
-                    if(this.x + this.width >= hitbox.x && this.x <= hitbox.x + hitbox.width && this.y + this.height >= hitbox.y && this.y <= hitbox.y + hitbox.height){
+                    let velocityX = this.attachment != undefined ? this.attachment.velocity.x : 0;
+                    let velocityY = this.attachment != undefined ? this.attachment.velocity.y : 0;
+                    if(this.x + this.width + velocityX >= hitbox.x &&
+                         this.x + velocityX <= hitbox.x + hitbox.width &&
+                          this.y + this.height + velocityY >= hitbox.y &&
+                           this.y + velocityY <= hitbox.y + hitbox.height){
                         if(this.solidCollision && hitbox.solidCollision){
 
                             // check where the collision occured (top, bottom, right or left)
@@ -40,8 +46,8 @@ class Hitbox{
                             let thisHalfHeight = this.height / 2;
                             let collisionHalfWidth = hitbox.width / 2;
                             let collisionHalfHeight = hitbox.height/2;
-                            let thisCenterX = this.x + thisHalfWidth;
-                            let thisCenterY = this.y + thisHalfHeight;
+                            let thisCenterX = this.x + velocityX + thisHalfWidth;
+                            let thisCenterY = this.y + velocityY + thisHalfHeight;
                             let collisionCenterX = hitbox.x + collisionHalfWidth;
                             let collisionCenterY = hitbox.y + collisionHalfHeight;
 
@@ -57,7 +63,6 @@ class Hitbox{
                             let depthX = diffX > 0 ? minDistX - diffX : -minDistX - diffX;
                             let depthY = diffY > 0 ? minDistY - diffY : -minDistY - diffY; 
                                               
-                            // don't mind the duplicationg code
                             if(this.attachment != undefined){
                                 if(depthX != 0 && depthY != 0){
                                     if(Math.abs(depthX) < Math.abs(depthY)){
@@ -70,7 +75,7 @@ class Hitbox{
                                         else{
                                             // Right side collision
                                             this.attachment.x = hitbox.x - this.attachment.width;
-                                            console.log("righjt collision");
+                                            console.log("right collision");
                                         }
                                     }
                                     else{
@@ -78,11 +83,19 @@ class Hitbox{
                                         if(depthY > 0){
                                             // Top side collision
                                             this.attachment.y = hitbox.y + hitbox.height;
+                                            if(this.attachment.velocity.y < 0){
+                                                this.attachment.velocity.y = 0;
+                                            }
                                             console.log("top collision");
                                         }
                                         else{
                                             // Bottom side collision
                                             this.attachment.y = hitbox.y - this.attachment.height;
+                                            this.attachment.isGrounded = true;
+                                            if(this.attachment.velocity.y > 0){
+                                                this.attachment.velocity.y = 0;
+                                            }
+                                            this.attachment.timeFalling = 0;
                                         }
                                     }   
                                 }
@@ -90,9 +103,19 @@ class Hitbox{
                         }
 
                         this.collisionDetected(hitbox);
+                        if(this.collidingWith.indexOf(hitbox) == -1){
+                            this.collidingWith.push(hitbox);
+                        }
+                    }
+
+                    else if(this.collidingWith.indexOf(hitbox) != -1){ 
+                        let hitboxIndex = this.collidingWith.indexOf(hitbox);
+                        this.collidingWith.splice(hitboxIndex, 1);
+                        this.collisionEnded(hitbox);
                     }
                 }
-            })
+
+            }) // foreach ends here
         }
     }
 
@@ -100,6 +123,10 @@ class Hitbox{
     // gets called when a collision is detected. Argument passed is the hitbox this collided with
     collisionDetected(other){
         //console.log("collided other: " + other.x + " this: " + this.x + " actia;;y other: " + other == this);
+    }
+
+    collisionEnded(other){
+        if(this.attachment != undefined) { this.attachment.isGrounded = false;}
     }
 
     addToPosition(x, y){

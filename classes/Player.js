@@ -15,8 +15,9 @@ class Player{
         this.gravityMultiplyer = gravity;
         this.isGrounded = false;
         this.timeFalling = 0;
-        this.jumpForce = 10;
+        this.jumpForce = 20;
         this.attachedElements = [];
+        this.isJumping = false;
     }
 
     // used to render the player. Should be called every frame;
@@ -44,22 +45,26 @@ class Player{
         if(!this.isGrounded){
             // this is a formula i found online. don't question it. TEMP VALUE: this.y before everything else. not used right now though
             // this.velocity.y = this.velocity.y * this.time + 0.5 * 9.81*(this.time*this.time);
+            this.timeFalling += 0.1;
+            //this.timeFalling += (1/fpsCap) 
             this.velocity.y += this.timeFalling * this.gravityMultiplyer;
-            this.timeFalling += (1/fpsCap) 
-            if(this.y + this.height > canvas.height){
+            if(this.y + this.height + this.velocity.y >= canvas.height){
                 this.isGrounded = true;
                 this.y = canvas.height - this.height;
                 this.velocity.y = 0;
                 this.timeFalling = 0;
+                this.isJumping = false;
             }
         }
     }
 
     jump(){
-        if(this.isGrounded){
+        if(this.isGrounded && !this.isJumping){
             this.velocity.y += -1 * this.jumpForce;
             this.isGrounded = false;
+            this.isJumping = true;
         }
+        console.log("jumping!", this.velocity.y)
     }
 
 

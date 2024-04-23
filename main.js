@@ -3,6 +3,7 @@ import Player from "./classes/Player.js";
 import { SquareHitbox } from "./classes/Hitboxes.js";
 
 
+// fighting games should ideally be 60 fps so do not change this unless you know what you are doing. Changing this might also break something if it depends on fps cap.
 let fpsCap = 60;
 // keep every instance of a player here so it gets properly rendered in Tick function
 let players = [];
@@ -37,6 +38,7 @@ function Tick(){
         hitboxes[1].render();
         //console.log(hitboxes[1].x)
     })
+    //console.log(players[0].isGrounded, players[0].timeFalling)
 }
 let gameLoop = setInterval(Tick, (1/fpsCap) * 1000);
 

@@ -120,11 +120,12 @@ class Hitbox{
     }
 
 
-    // gets called when a collision is detected. Argument passed is the hitbox this collided with
+    // gets called when a collision is detected. Passed argument is the hitbox this collided with
     collisionDetected(other){
-        //console.log("collided other: " + other.x + " this: " + this.x + " actia;;y other: " + other == this);
+
     }
 
+    // gets called when going out of collision with an object. Passed argument is the hitbox this stopped colliding with.
     collisionEnded(other){
         if(this.attachment != undefined) { this.attachment.isGrounded = false;}
     }
@@ -133,6 +134,10 @@ class Hitbox{
         if(x == undefined || y == undefined || typeof(x) != "number" || typeof(y) != "number") {throw "Invalid arguments."}
         this.x += x;
         this.y += y;
+        if(this.attachment != undefined){
+            this.relativeX = this.x - this.attachment.x;
+            this.relativeY = this.x - this.attachment.y;
+        }
     }
 
     addToRelativePosition(x, y){
@@ -146,6 +151,10 @@ class Hitbox{
         if(x == undefined || y == undefined || typeof(x) != "number" || typeof(y) != "number") {throw "Invalid arguments."}
         this.x = x;
         this.y = y;
+        if(this.attachment != undefined){
+            this.relativeX = this.x - this.attachment.x;
+            this.relativeY = this.x - this.attachment.y;
+        }
     }
     
     // relative position means relative to the parent this element is attached to. Parent is usually an object of class Player
@@ -165,14 +174,9 @@ class Hitbox{
     setIsActive(isActive){
         this.isActive = isActive;
         if(isActive){
-            // for tomorrow: setInterval where it checks for collision every frame
-        }
-        else if(this.interval){
-            clearInterval(this.interval);
+            this.checkForCollision();
         }
     }
-
-    // TODO: Add a method to detect collision.
 
 }
 
@@ -183,7 +187,6 @@ class SquareHitbox extends Hitbox{
         this.height = height;
     }
 
-    // not tested! test next time!!!
     render(){
         if(this.isVisible){
             ctx.strokeStyle = "green";

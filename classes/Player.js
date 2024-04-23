@@ -1,5 +1,5 @@
 import { ctx, canvas } from "../canvas.js";
-import { fpsCap } from "../main.js";
+import { fpsCap, deltaTime } from "../main.js";
 import { SquareHitbox } from "./Hitboxes.js";
 
 class Player{
@@ -15,7 +15,7 @@ class Player{
         this.gravityMultiplyer = gravity;
         this.isGrounded = false;
         this.timeFalling = 0;
-        this.jumpForce = 20;
+        this.jumpForce = 200;
         this.attachedElements = [];
         this.isJumping = false;
     }
@@ -31,7 +31,7 @@ class Player{
         // if(playerPositionAfterMoving < canvas.width && this.x + this.velocity.x > 0){
         //     this.x += this.velocity.x;
         // }
-        this.x += this.velocity.x;
+        this.x += this.velocity.x * deltaTime;
         if(this.x + this.width > canvas.width){
             this.x = canvas.width - this.width;
         }
@@ -48,7 +48,7 @@ class Player{
             this.timeFalling += 0.1;
             //this.timeFalling += (1/fpsCap) 
             this.velocity.y += this.timeFalling * this.gravityMultiplyer;
-            if(this.y + this.height + this.velocity.y >= canvas.height){
+            if(this.y + this.height + this.velocity.y * deltaTime >= canvas.height){
                 this.isGrounded = true;
                 this.y = canvas.height - this.height;
                 this.velocity.y = 0;
@@ -73,7 +73,7 @@ class Player{
         this.render();
         this.moveX();
         this.gravityEffect();
-        this.y += this.velocity.y;
+        this.y += this.velocity.y * deltaTime;
         this.attachedElements.forEach((element) => {
             // this shouldn't be called every update. currently just testing
             element.setRelativePosition(element.relativeX, element.relativeY);

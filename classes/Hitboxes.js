@@ -1,5 +1,5 @@
 import { ctx } from '../canvas.js'
-import { hitboxes } from '../main.js';
+import { hitboxes, deltaTime } from '../main.js';
 
 // more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
 
@@ -33,8 +33,8 @@ class Hitbox{
             hitboxes.forEach((hitbox)=>{
                 // checks for collision
                 if(hitbox.isActive && hitbox != this){
-                    let velocityX = this.attachment != undefined ? this.attachment.velocity.x : 0;
-                    let velocityY = this.attachment != undefined ? this.attachment.velocity.y : 0;
+                    let velocityX = this.attachment != undefined ? this.attachment.velocity.x * deltaTime : 0;
+                    let velocityY = this.attachment != undefined ? this.attachment.velocity.y * deltaTime : 0;
                     if(this.x + this.width + velocityX >= hitbox.x &&
                          this.x + velocityX <= hitbox.x + hitbox.width &&
                           this.y + this.height + velocityY >= hitbox.y &&

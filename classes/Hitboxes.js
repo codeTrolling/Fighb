@@ -75,7 +75,7 @@ class Hitbox{
                                         else{
                                             // Right side collision
                                             this.attachment.x = hitbox.x - this.attachment.width;
-                                            console.log("right collision");
+                                            console.log("right collision", this.attachment.timeFalling);
                                         }
                                     }
                                     else{
@@ -91,11 +91,12 @@ class Hitbox{
                                         else{
                                             // Bottom side collision
                                             this.attachment.y = hitbox.y - this.attachment.height;
-                                            this.attachment.isGrounded = true;
                                             if(this.attachment.velocity.y > 0){
+                                                this.attachment.isGrounded = true;
                                                 this.attachment.velocity.y = 0;
+                                                this.attachment.timeFalling = 0;
                                             }
-                                            this.attachment.timeFalling = 0;
+                                            console.log("bot collision")
                                         }
                                     }   
                                 }

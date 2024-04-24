@@ -64,7 +64,6 @@ class Player{
             this.isGrounded = false;
             this.isJumping = true;
         }
-        console.log("jumping!", this.velocity.y)
     }
 
 

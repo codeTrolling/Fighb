@@ -41,10 +41,7 @@ function Tick(){
     players.forEach((player)=>{
         player.update();
         hitboxes[1].render();
-        //console.log(hitboxes[1].x)
     })
-    //console.log(players[0].isGrounded, players[0].timeFalling)
-    console.log(deltaTime);
 }
 let gameLoop = setInterval(Tick, (1/fpsCap) * 1000);
 

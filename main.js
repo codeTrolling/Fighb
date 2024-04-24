@@ -4,7 +4,7 @@ import { SquareHitbox } from "./classes/Hitboxes.js";
 
 
 // fighting games should ideally be 60 fps so do not change this unless you know what you are doing. Changing this might also break something if it depends on fps cap.
-let fpsCap = 200;
+let fpsCap = 60;
 // keep every instance of a player here so it gets properly rendered in Tick function
 let players = [];
 
@@ -12,7 +12,7 @@ players.push(new Player({
     x: 50,
     y: 50,
     health: 100,
-    moveSpeed: 100
+    moveSpeed: 300
 }));
 
 // keep all hitboxes here. Looking for collision will loop over this array

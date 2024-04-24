@@ -15,7 +15,7 @@ class Player{
         this.gravityMultiplyer = gravity;
         this.isGrounded = false;
         this.timeFalling = 0;
-        this.jumpForce = 200;
+        this.jumpForce = 700;
         this.attachedElements = [];
         this.isJumping = false;
     }
@@ -45,9 +45,9 @@ class Player{
         if(!this.isGrounded){
             // this is a formula i found online. don't question it. TEMP VALUE: this.y before everything else. not used right now though
             // this.velocity.y = this.velocity.y * this.time + 0.5 * 9.81*(this.time*this.time);
-            this.timeFalling += 0.1;
+            this.timeFalling += 100;
             //this.timeFalling += (1/fpsCap) 
-            this.velocity.y += this.timeFalling * this.gravityMultiplyer;
+            this.velocity.y += this.timeFalling * deltaTime * this.gravityMultiplyer;
             if(this.y + this.height + this.velocity.y * deltaTime >= canvas.height){
                 this.isGrounded = true;
                 this.y = canvas.height - this.height;

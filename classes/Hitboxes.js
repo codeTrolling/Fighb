@@ -32,7 +32,7 @@ class Hitbox{
         if(this.isActive){
             hitboxes.forEach((hitbox)=>{
                 // checks for collision
-                if(hitbox.isActive && hitbox != this){
+                if(hitbox.isActive && hitbox != this && (hitbox.attachment ? this.attachment != hitbox.attachment : true)){
                     let velocityX = this.attachment != undefined ? this.attachment.velocity.x * deltaTime : 0;
                     let velocityY = this.attachment != undefined ? this.attachment.velocity.y * deltaTime : 0;
                     if(this.x + this.width + velocityX >= hitbox.x &&
@@ -103,16 +103,20 @@ class Hitbox{
                             }
                         }
 
-                        this.collisionDetected(hitbox);
                         if(this.collidingWith.indexOf(hitbox) == -1){
+                            this.enterCollision(hitbox);
                             this.collidingWith.push(hitbox);
                         }
+                        else{
+                            this.inCollision(hitbox);
+                        }
+
                     }
 
                     else if(this.collidingWith.indexOf(hitbox) != -1){ 
                         let hitboxIndex = this.collidingWith.indexOf(hitbox);
                         this.collidingWith.splice(hitboxIndex, 1);
-                        this.collisionEnded(hitbox);
+                        this.endCollision(hitbox);
                     }
                 }
 
@@ -122,12 +126,17 @@ class Hitbox{
 
 
     // gets called when a collision is detected. Passed argument is the hitbox this collided with
-    collisionDetected(other){
+    enterCollision(other){
+
+    }
+
+    // gets called when the object is continuously colliding with another object
+    inCollision(other){
 
     }
 
     // gets called when going out of collision with an object. Passed argument is the hitbox this stopped colliding with.
-    collisionEnded(other){
+    endCollision(other){
         if(this.attachment != undefined) { this.attachment.isGrounded = false;}
     }
 

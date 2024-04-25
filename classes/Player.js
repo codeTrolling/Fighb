@@ -69,7 +69,6 @@ class Player{
 
     // called every frame
     update(){
-        this.render();
         this.moveX();
         this.gravityEffect();
         this.y += this.velocity.y * deltaTime;
@@ -78,6 +77,7 @@ class Player{
             element.setRelativePosition(element.relativeX, element.relativeY);
             element.render();
         })
+        this.render();
     }
 }
 

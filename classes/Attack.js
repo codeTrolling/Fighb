@@ -95,6 +95,33 @@ class Attack{
         this.hyperarmor = hyperarmor;
     }
 
+
+    setFrameAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set frame to undefined" };
+        this.frames[index] = value;
+    }
+
+
+    setDamageValueAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set damage to undefined" };
+        this.damageValues[index] = value;
+    }
+
+
+    setDamageValueOnBlockAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set damage to undefined" };
+        this.damageValuesOnBlock[index] = value;
+    }
+
+
+    setCounterHitDamageValueAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set damage to undefined" };
+        this.counterHitDamageValues[index] = value;
+    }
     // TODO make index setters for everything
 }
 

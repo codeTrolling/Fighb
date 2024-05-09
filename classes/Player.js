@@ -30,6 +30,7 @@ class Player{
         this.isAttacking = false;
         // which part of the attack should happen or in other words how much the attack has progressed.
         this.attackIndex = 0;
+        this.timeoutForAttackIndexReset;
     }
 
     // used to render the player. Should be called every frame;
@@ -80,10 +81,35 @@ class Player{
 
 
 
-    // Make sure that there is no undefined class properties. This function does not check for these things in order to avoid making useless instructions every time an attack is done
+    // Make sure that there is no undefined Attack class properties. This function does not check for these things in order to avoid making useless instructions every time an attack is done
+    // this function will try to attack and handle buffering. If buffering occurs it will call attack() when appropriate
     // atkString is the attack string. It is how it is determined which attack can be used.
-    attack(atkString){
+    attackOrBuffer(atkString){
+        if(this.availableAttacks.length > 0){
+            for(let i = 0; i < this.availableAttacks.length; i++){
+                if(atkString == this.availableAttacks[i].attackString[this.attackIndex]){
 
+                    const timeForOneFrame = (1/fpsCap) * 1000;
+                    const noBufferAttackCd = Date.now() - timeForOneFrame * this.availableAttacks[i].frames[this.attackIndex];
+                    const bufferAttackCd = Date.now() - timeForOneFrame * (this.availableAttacks[i].frames[this.attackIndex] - this.availableAttacks[i].bufferFrames[this.attackIndex]);
+                    // no buffering
+                    if(noBufferAttackCd > this.timeOfLastAttack){
+
+                    }
+                    // buffering occurs
+                    else if(bufferAttackCd > this.timeOfLastAttack){
+
+                    }
+                    // the idea here is to setTimeout to reset attackIndex after the attack's frames + a global variable which contains the time give to continue a combo have passed.
+                    // Check if such a timeout already exists though
+                    // timeoutForAttackIndexReset = setTimeout(()=>{})
+
+                }
+                else{
+                    this.availableAttacks.splice(i, 1);
+                }
+            }
+        }
     }
 
 

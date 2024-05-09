@@ -10,6 +10,7 @@ class Attack{
         this.enemyFramesOnHit = enemyFramesOnHit;
         this.enemyFramesOnBlock = enemyFramesOnBlock;
         this.frames = frames;
+        // hyperarmor means that the player will not get knockbacked and the attack will not be interrupted when the player gets hit. Damage is still taken.
         this.hyperarmor = hyperarmor;
         // an alias for attackString.length
         this.attackCount;
@@ -96,6 +97,7 @@ class Attack{
     }
 
 
+    // Sets the attack string at a given index. This will change the buttons needed to perform the specified attack.
     setAttackStringAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set attack string to undefined" };
@@ -103,6 +105,7 @@ class Attack{
     }
 
 
+    // Sets the frames value at a given index
     setFrameAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set frame to undefined" };
@@ -110,6 +113,7 @@ class Attack{
     }
 
 
+    // Sets the damage value at a given index
     setDamageValueAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set damage to undefined" };
@@ -117,6 +121,7 @@ class Attack{
     }
 
 
+    // Sets the damage on block value at a given index
     setDamageValueOnBlockAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set damage to undefined" };
@@ -124,6 +129,7 @@ class Attack{
     }
 
 
+    // Sets the counter hit damage value at a given index
     setCounterHitDamageValueAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set damage to undefined" };
@@ -131,6 +137,7 @@ class Attack{
     }
 
 
+    // Sets the frames on hit value at a given index
     setEnemyFrameOnHitAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set frame to undefined" };
@@ -138,12 +145,13 @@ class Attack{
     }
 
 
+    // Sets the frames on block value at a given index
     setEnemyFrameOnBlockAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set frame to undefined" };
         this.enemyFramesOnBlock[index] = value;
     }
-    // TODO make index setters for everything
+    
 }
 
 export { Attack };

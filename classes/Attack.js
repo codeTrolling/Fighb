@@ -96,6 +96,13 @@ class Attack{
     }
 
 
+    setAttackStringAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set attack string to undefined" };
+        this.attackString[index] = value;
+    }
+
+
     setFrameAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set frame to undefined" };
@@ -121,6 +128,20 @@ class Attack{
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set damage to undefined" };
         this.counterHitDamageValues[index] = value;
+    }
+
+
+    setEnemyFrameOnHitAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set frame to undefined" };
+        this.enemyFramesOnHit[index] = value;
+    }
+
+
+    setEnemyFrameOnBlockAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set frame to undefined" };
+        this.enemyFramesOnBlock[index] = value;
     }
     // TODO make index setters for everything
 }

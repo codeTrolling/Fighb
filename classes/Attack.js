@@ -2,7 +2,9 @@ import { fpsCap } from "../main";
 
 class Attack{
     // everything is an array
-    constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor, hitboxPositions){
+    constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor, hitboxPositions,
+        hitboxWidths, hitboxHeights
+    ){
         this.attackString = attackString;
         this.damageValues = damageValues;
         this.damageValuesOnBlock = damageValuesOnBlock;
@@ -17,6 +19,8 @@ class Attack{
         // an alias for attackString.length
         this.attackCount;
         this.hitboxPositions = hitboxPositions;
+        this.hitboxHeights = hitboxHeights;
+        this.hitboxWidths = hitboxWidths;
     }
 
 
@@ -122,6 +126,28 @@ class Attack{
     }
 
 
+    setHitboxWidths(width){
+        if(!width || !Array.isArray(width)) { throw "Invalid arguments." };
+        if(width.length == this.attackCount){
+            this.hitboxWidths = width;
+        }
+        else{
+            throw `Hitbox width values given were more or less than the attack count. The attack is ${this.attackCount} long but you have given ${width.length} damage values.`
+        }
+    }
+
+
+    setHitboxHeights(height){
+        if(!height || !Array.isArray(height)) { throw "Invalid arguments." };
+        if(height.length == this.attackCount){
+            this.hitboxHeights = height;
+        }
+        else{
+            throw `Hitbox height values given were more or less than the attack count. The attack is ${this.attackCount} long but you have given ${height.length} damage values.`
+        }
+    }
+
+
     // Sets the attack string at a given index. This will change the buttons needed to perform the specified attack.
     setAttackStringAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
@@ -191,6 +217,22 @@ class Attack{
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set position to undefined" };
         this.hitboxPositions[index] = value;
+    }
+
+
+    // Sets hitbox width value at a given index
+    setHitboxWidthAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set width to undefined" };
+        this.hitboxWidths[index] = value;
+    }
+
+
+    // Sets hitbox height value at a given index
+    setHitboxHeightAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set height to undefined" };
+        this.hitboxHeights[index] = value;
     }
     
 }

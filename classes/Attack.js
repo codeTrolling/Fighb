@@ -3,7 +3,7 @@ import { fpsCap } from "../main";
 class Attack{
     // everything is an array
     constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor, hitboxPositions,
-        hitboxWidths, hitboxHeights
+        hitboxWidths, hitboxHeights, hitboxToUse
     ){
         this.attackString = attackString;
         this.damageValues = damageValues;
@@ -18,6 +18,7 @@ class Attack{
         this.hyperarmor = hyperarmor;
         // an alias for attackString.length
         this.attackCount;
+        this.hitboxToUse = hitboxToUse;
         this.hitboxPositions = hitboxPositions;
         this.hitboxHeights = hitboxHeights;
         this.hitboxWidths = hitboxWidths;
@@ -112,6 +113,12 @@ class Attack{
     setHyperarmor(hyperarmor){
         if(typeof(hyperarmor) != "boolean") { throw "Invalid arguments." }
         this.hyperarmor = hyperarmor;
+    }
+
+
+    // this should be an object of type Hitbox
+    setHitboxToUse(hitbox){
+        this.hitboxToUse = hitbox;
     }
 
 

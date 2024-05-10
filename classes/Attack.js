@@ -2,7 +2,7 @@ import { fpsCap } from "../main";
 
 class Attack{
     // everything is an array
-    constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor){
+    constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor, hitboxPositions){
         this.attackString = attackString;
         this.damageValues = damageValues;
         this.damageValuesOnBlock = damageValuesOnBlock;
@@ -16,6 +16,7 @@ class Attack{
         this.hyperarmor = hyperarmor;
         // an alias for attackString.length
         this.attackCount;
+        this.hitboxPositions = hitboxPositions;
     }
 
 
@@ -110,6 +111,17 @@ class Attack{
     }
 
 
+    setHitboxPositions(pos){
+        if(!pos || !Array.isArray(pos)) { throw "Invalid arguments." };
+        if(pos.length == this.attackCount){
+            this.hitboxPositions = pos;
+        }
+        else{
+            throw `Hitbox positions values given were more or less than the attack count. The attack is ${this.attackCount} long but you have given ${pos.length} damage values.`
+        }
+    }
+
+
     // Sets the attack string at a given index. This will change the buttons needed to perform the specified attack.
     setAttackStringAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
@@ -171,6 +183,14 @@ class Attack{
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set frame to undefined" };
         this.enemyFramesOnBlock[index] = value;
+    }
+
+
+    // Sets hitbox position value at a given index
+    setHitboxPositionAtIndex(index, value){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
+        if(!value) { throw "Cannot set position to undefined" };
+        this.hitboxPositions[index] = value;
     }
     
 }

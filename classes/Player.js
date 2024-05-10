@@ -27,6 +27,7 @@ class Player{
         this.timeOfLastAttack = 0;
         this.canBufferAttack = false;
         this.bufferedAttack = "";
+        this.bufferTimout;
         this.isAttacking = false;
         // which part of the attack should happen or in other words how much the attack has progressed.
         this.attackIndex = 0;
@@ -85,6 +86,7 @@ class Player{
     // this function will try to attack and handle buffering. If buffering occurs it will call attack() when appropriate
     // atkString is the attack string. It is how it is determined which attack can be used.
     attackOrBuffer(atkString){
+        if(this.bufferedAttack != ""){return;}
         if(this.availableAttacks.length > 0){
             for(let i = 0; i < this.availableAttacks.length; i++){
                 if(atkString == this.availableAttacks[i].attackString[this.attackIndex]){
@@ -94,13 +96,17 @@ class Player{
                     const bufferAttackCd = Date.now() - timeForOneFrame * (this.availableAttacks[i].frames[this.attackIndex] - this.availableAttacks[i].bufferFrames[this.attackIndex]);
                     // no buffering
                     if(noBufferAttackCd > this.timeOfLastAttack){
-
+                        // just use the attack here
+                        this.isAttacking = true;
+                        this.attackIndex++;
                     }
                     // buffering occurs
                     else if(bufferAttackCd > this.timeOfLastAttack){
-
+                        // setTimeout which calls this function again after enough time has passed
+                        const timeUntilCanAttack = this.timeOfLastAttack - noBufferAttackCd;
+                        bufferTimout = setTimeout(() => {this.bufferedAttack = atkString; this.attackOrBuffer(this.bufferedAttack)}, timeUntilCanAttack)
                     }
-                    // the idea here is to setTimeout to reset attackIndex after the attack's frames + a global variable which contains the time give to continue a combo have passed.
+                    // the idea here is to setTimeout to reset attackIndex after the attack's frames + a global variable which contains the time given to continue a combo have passed.
                     // Check if such a timeout already exists though
                     // timeoutForAttackIndexReset = setTimeout(()=>{})
 

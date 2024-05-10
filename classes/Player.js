@@ -1,5 +1,5 @@
 import { ctx, canvas } from "../canvas.js";
-import { fpsCap, deltaTime } from "../main.js";
+import { fpsCap, deltaTime, timeForOneFrame } from "../main.js";
 import { SquareHitbox } from "./Hitboxes.js";
 import { Attack } from "./Attack.js";
 
@@ -91,7 +91,6 @@ class Player{
             for(let i = 0; i < this.availableAttacks.length; i++){
                 if(atkString == this.availableAttacks[i].attackString[this.attackIndex]){
 
-                    const timeForOneFrame = (1/fpsCap) * 1000;
                     const noBufferAttackCd = Date.now() - timeForOneFrame * this.availableAttacks[i].frames[this.attackIndex];
                     const bufferAttackCd = Date.now() - timeForOneFrame * (this.availableAttacks[i].frames[this.attackIndex] - this.availableAttacks[i].bufferFrames[this.attackIndex]);
                     // no buffering

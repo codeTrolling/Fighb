@@ -6,9 +6,10 @@ import Entity from "./Entity.js";
 
 class Player extends Entity{
     static count = 0;
-    constructor({x=0, y=0, health=100, moveSpeed=5, width=50, height=100, gravity = 1}){
+    constructor({x=0, y=0, health=100, moveSpeed=5, width=50, height=100, gravity = 1, name = ""}){
         count++;
-        super(count)
+        let tempName = name != "" ? name : "player" + toString(count);
+        super(tempName);
         this.x = x;
         this.y = y;
         this.velocity = {x: 0, y: 0};

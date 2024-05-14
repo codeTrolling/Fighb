@@ -5,7 +5,11 @@ import Entity from './Entity.js';
 // more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
 
 class Hitbox extends Entity{
-    constructor({x=0, y=0, attachment = undefined}){
+    static count = 0;
+    constructor({x=0, y=0, attachment = undefined, name = ""}){
+        count++;
+        let tempName = name != "" ? name : "hitbox" + toString(count);
+        super(tempName);
         // do NOT change x and y manually. use methods like set position instead. x and y should be protected
         this.x = attachment ? attachment.x + x : x;
         this.y = attachment ? attachment.y + y : y;

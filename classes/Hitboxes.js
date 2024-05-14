@@ -1,5 +1,6 @@
 import { ctx } from '../canvas.js'
 import { hitboxes, deltaTime } from '../main.js';
+import { FindEntity } from '../workingWithEntities/FindEntities.js';
 import Entity from './Entity.js';
 
 // more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
@@ -24,8 +25,25 @@ class Hitbox extends Entity{
         this.collidingWith = [];
     }
 
-    setupAttachment(attachment){
-        if(this.attachment == attachment) {return;}
+    // attach this element to another element by object
+    setupAttachmentByObject(attachment){
+        if(this.attachment == attachment || attachment == this) {return;}
+        this.attachment = attachment;
+        this.x = attachment.x;
+        this.y = attachment.y;
+        attachment.attachedElements.push(this);
+    }
+
+    // attach this element to another element by searching for a name
+    setupAttachmentByName(name){
+        if(name == this.name){ return;}
+        let attachment = FindEntity(name);
+        if(attachment == -1){
+            console.log("Entity not found");
+            return;
+        }
+        if(this.attachment == attachment){return;}
+
         this.attachment = attachment;
         this.x = attachment.x;
         this.y = attachment.y;

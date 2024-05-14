@@ -2,9 +2,13 @@ import { ctx, canvas } from "../canvas.js";
 import { fpsCap, deltaTime, timeForOneFrame } from "../main.js";
 import { SquareHitbox } from "./Hitboxes.js";
 import { Attack } from "./Attack.js";
+import Entity from "./Entity.js";
 
-class Player{
+class Player extends Entity{
+    static count = 0;
     constructor({x=0, y=0, health=100, moveSpeed=5, width=50, height=100, gravity = 1}){
+        count++;
+        super(count)
         this.x = x;
         this.y = y;
         this.velocity = {x: 0, y: 0};

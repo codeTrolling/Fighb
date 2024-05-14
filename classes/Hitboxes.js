@@ -1,9 +1,10 @@
 import { ctx } from '../canvas.js'
 import { hitboxes, deltaTime } from '../main.js';
+import Entity from './Entity.js';
 
 // more exceptions should be thrown. Check attachment type (should be of type player). Typescript's looking kind of good right now.
 
-class Hitbox{
+class Hitbox extends Entity{
     constructor({x=0, y=0, attachment = undefined}){
         // do NOT change x and y manually. use methods like set position instead. x and y should be protected
         this.x = attachment ? attachment.x + x : x;

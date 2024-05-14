@@ -6,7 +6,7 @@ import Entity from "./Entity.js";
 
 class Player extends Entity{
     static count = 0;
-    constructor({x=0, y=0, health=100, moveSpeed=5, width=50, height=100, gravity = 1, name = ""}){
+    constructor({x=0, y=0, health=100, moveSpeed=300, width=50, height=100, gravity = 1, name = ""}){
         count++;
         let tempName = name != "" ? name : "player" + toString(count);
         super(tempName);

@@ -196,7 +196,7 @@ class Hitbox extends Entity{
 }
 
 class SquareHitbox extends Hitbox{
-    constructor({x=0, y=0, width=0, height=0, attachment=undefined}) {
+    constructor({x=0, y=0, width=50, height=50, attachment=undefined}) {
         super(x, y, attachment);
         this.width = width;
         this.height = height;

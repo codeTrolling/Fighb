@@ -28,6 +28,9 @@ class Hitbox extends Entity{
     // attach this element to another element by object
     setupAttachmentByObject(attachment){
         if(this.attachment == attachment || attachment == this) {return;}
+
+        this.detachByObject(this.attachment);
+
         this.attachment = attachment;
         this.x = attachment.x;
         this.y = attachment.y;
@@ -42,13 +45,29 @@ class Hitbox extends Entity{
             console.log("Entity not found");
             return;
         }
-        if(this.attachment == attachment){return;}
-
-        this.attachment = attachment;
-        this.x = attachment.x;
-        this.y = attachment.y;
-        attachment.attachedElements.push(this);
+        
+        this.setupAttachmentByObject(attachment);
     }
+
+    // detach from an element by object
+    detachByObject(attachment){
+        if(attachment != this.attachment) {return;}
+        let index = attachment.attachedElements.indexOf(this);
+        attachment.attachedElements.splice(index, 1);
+    }
+
+    // detach from an element by searching for a name
+    detachByName(name){
+        if(name == this.name){ return;}
+        let attachment = FindEntity(name);
+        if(attachment == -1){
+            console.log("Entity not found");
+            return;
+        }
+        this.detachByObject(attachment);
+    }
+
+
 
     // this only really works for square hitboxes as it is. Might remake at some point
     checkForCollision(){

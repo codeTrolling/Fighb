@@ -2,8 +2,8 @@ import { fpsCap } from "../main";
 
 class Attack{
     // everything is an array
-    constructor(attackString, damageValues, damageValuesOnBlock, counterHitDamageValues, enemyFramesOnHit, enemyFramesOnBlock, frames, bufferFrames, hyperarmor, hitboxPositions,
-        hitboxWidths, hitboxHeights, hitboxToUse
+    constructor(attackString=[""], damageValues=[0], damageValuesOnBlock=[0], counterHitDamageValues=[0], enemyFramesOnHit=[0], enemyFramesOnBlock=[0], frames=[0], bufferFrames=[0], hyperarmor=false, hitboxPositions=[[0,0]],
+        hitboxWidths=[0], hitboxHeights=[0], hitboxToUse=undefined, knockbackDirX=[0], knockbackDirY=[0]
     ){
         this.attackString = attackString;
         this.damageValues = damageValues;
@@ -22,6 +22,8 @@ class Attack{
         this.hitboxPositions = hitboxPositions;
         this.hitboxHeights = hitboxHeights;
         this.hitboxWidths = hitboxWidths;
+        this.knockbackDirX = knockbackDirX;
+        this.knockbackDirY = knockbackDirY;
     }
 
 

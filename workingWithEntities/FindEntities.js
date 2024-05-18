@@ -1,4 +1,4 @@
-import { entities, players } from "../main";
+import { entities, players, hitboxes } from "../main";
 
 // searches for an entity by name. returns -1 if an entity is not found
 function FindEntity(name){
@@ -22,4 +22,15 @@ function FindPlayer(name){
 }
 
 
-export {FindEntity, FindPlayer};
+// searches for a hitbox by its name. return -1 if a hitbox is not found
+function FindHitbox(name){
+    hitboxes.forEach(h => {
+        if(h.name == name){
+            return p;
+        }
+    })
+    return -1;
+}
+
+
+export {FindEntity, FindPlayer, FindHitbox};

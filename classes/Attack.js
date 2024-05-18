@@ -1,4 +1,5 @@
 import { fpsCap } from "../main";
+import { FindHitbox } from "../workingWithEntities/FindEntities";
 
 class Attack{
     // everything is an array
@@ -122,6 +123,15 @@ class Attack{
     setHitboxToUse(hitbox){
         this.hitboxToUse = hitbox;
     }
+
+    // use hitbox with this name{
+    setHitboxToUseName(name){
+        let hitbox = FindHitbox(name);
+        if(hitbox != -1){
+            this.hitboxToUse = hitbox;
+        }
+    }
+    
 
 
     setHitboxPositions(pos){

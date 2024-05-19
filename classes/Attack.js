@@ -1,5 +1,5 @@
-import { fpsCap } from "../main";
-import { FindHitbox } from "../workingWithEntities/FindEntities";
+import { fpsCap } from "../main.js";
+import { FindHitbox } from "../workingWithEntities/FindEntities.js";
 
 class Attack{
     // everything is an array

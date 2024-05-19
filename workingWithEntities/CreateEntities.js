@@ -1,6 +1,6 @@
-import { SquareHitbox } from "../classes/Hitboxes";
-import Player from "../classes/Player";
-import { entities, hitboxes, players } from "../main";
+import { SquareHitbox } from "../classes/Hitboxes.js";
+import Player from "../classes/Player.js";
+import { entities, hitboxes, players } from "../main.js";
 
 function CreatePlayer(){
     let player = new Player()

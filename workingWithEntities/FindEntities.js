@@ -1,4 +1,4 @@
-import { entities, players, hitboxes } from "../main";
+import { entities, players, hitboxes } from "../main.js";
 
 // searches for an entity by name. returns -1 if an entity is not found
 function FindEntity(name){

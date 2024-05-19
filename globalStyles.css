@@ -3,3 +3,16 @@ body{
     background-color: black;
     color: white;
 }
+
+.game-wrapper{
+    position: relative;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+}

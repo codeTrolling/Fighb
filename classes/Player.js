@@ -8,7 +8,7 @@ import Entity from "./Entity.js";
 let playerCount = 0;
 class Player extends Entity{
     constructor({x=0, y=0, health=100, moveSpeed=300, width=50, height=100, gravity = 1, name = ""}){
-        let tempName = name != "" ? name : "player" + toString(count);
+        let tempName = name != "" ? name : "player" + toString(playerCount);
         super(tempName);
         this.x = x;
         this.y = y;

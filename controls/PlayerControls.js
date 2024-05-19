@@ -85,9 +85,9 @@ setInterval(()=>{
 
 
 function handleMovementInputChain(action){
-    if(typeof(action) != "symbol"){ throw "Invalid argument. Functions takes a char"; }
+    if(typeof(action) != "string"){ throw "Invalid argument. Functions takes a char"; }
     playerOneMovementInputs.push(action);
-    if(playerOneMovementInputs.length() > 5){ playerOneMovementInputs.splice(0, 1)};
+    if(playerOneMovementInputs.length > 5){ playerOneMovementInputs.splice(0, 1)};
     clearTimeout(playerOneMovementTimout);
     playerOneMovementTimout = setTimeout(() => {
         playerOneMovementInputs = [];

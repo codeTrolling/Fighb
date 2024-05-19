@@ -8,7 +8,7 @@ import Entity from './Entity.js';
 let hitboxesCount = 0;
 class Hitbox extends Entity{
     constructor({x=0, y=0, attachment = undefined, name = ""}){
-        let tempName = name != "" ? name : "hitbox" + toString(count);
+        let tempName = name != "" ? name : "hitbox" + toString(hitboxesCount);
         super(tempName);
         // do NOT change x and y manually. use methods like set position instead. x and y should be protected
         this.x = attachment ? attachment.x + x : x;
@@ -50,7 +50,7 @@ class Hitbox extends Entity{
 
     // detach from an element by object
     detachByObject(attachment){
-        if(attachment != this.attachment) {return;}
+        if(attachment != this.attachment || !attachment) {return;}
         let index = attachment.attachedElements.indexOf(this);
         attachment.attachedElements.splice(index, 1);
     }

@@ -24,7 +24,7 @@ players.push(new Player({
 
 hitboxes.push(new SquareHitbox({}));
 
-hitboxes[0].setupAttachment(players[0]);
+hitboxes[0].setupAttachmentByObject(players[0]);
 hitboxes[0].width = hitboxes[0].attachment.width;
 hitboxes[0].height = hitboxes[0].attachment.height;
 

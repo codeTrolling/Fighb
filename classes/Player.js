@@ -4,10 +4,10 @@ import { SquareHitbox } from "./Hitboxes.js";
 import { Attack } from "./Attack.js";
 import Entity from "./Entity.js";
 
+
+let playerCount = 0;
 class Player extends Entity{
-    static count = 0;
     constructor({x=0, y=0, health=100, moveSpeed=300, width=50, height=100, gravity = 1, name = ""}){
-        count++;
         let tempName = name != "" ? name : "player" + toString(count);
         super(tempName);
         this.x = x;
@@ -137,4 +137,5 @@ class Player extends Entity{
     }
 }
 
+export {playerCount};
 export default Player;

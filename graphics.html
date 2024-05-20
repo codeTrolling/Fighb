@@ -6,23 +6,28 @@
     <link rel="stylesheet" href="globalStyles.css">
     <link rel="stylesheet" href="UI/GameUI/HPBarsAndTimer/Styles.css">
     <title id="title">Game</title>
+    <script defer src="main.js" type="module"></script>
     <script defer type="module" src="./controls/PlayerControls.js"></script>
     <script defer src="canvas.js" type="module"></script>
     <script defer src="./classes/Player.js" type="module"></script>
-    <script defer src="main.js" type="module"></script>
 </head>
 
 <body>
-    <div id="game-wrapper">
+    <div id="game-wrapper" style="position: relative;">
+
         <!-- HP and round timer UI -->
         <div class="flex health-and-time-container">
             <div class="player-health">
-                <img src="" alt="" id="player1-hp-container-image">
-                <div id="player1-hp"></div>
+                <img src="" alt="" class="hp-bar-image-container" id="player1-hp-container-image">
+                <div class="hp taken-hp" id="player1-taken-hp" style="width: 100%;"></div>
+                <div class="hp" id="player1-hp" style="background-color: greenyellow; width: 100%;"></div>
             </div>
         </div>
+
+
         <!-- Currently using canvas but might actually switch to using nothing. Will see. -->
-        <canvas id="canvas" width="1200" height="600"></canvas>
+        <!-- <canvas id="canvas" width="1200" height="600" style="position: absolute; top: 0;"></canvas> -->
+        <canvas id="canvas" style="position: absolute; top: 0;"></canvas>
 
     </div>
 </body>

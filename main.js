@@ -1,6 +1,7 @@
 import { ctx, canvas, fillCanvas } from "./canvas.js";
 import Player from "./classes/Player.js";
 import { SquareHitbox } from "./classes/Hitboxes.js";
+import { UpdatePlayerHealth, playersAreInitialized } from "./UI/GameUI/HPBarsAndTimer/Script.js";
 
 
 // fighting games should ideally be 60 fps so do not change this unless you know what you are doing. Changing this might also break something if it depends on fps cap.
@@ -33,6 +34,8 @@ hitboxes.push(new SquareHitbox({x: 400, y: 0, width: 100, height:100}));
 hitboxes[1].x = 400;
 hitboxes[1].y = canvas.height - hitboxes[1].height - 100;
 
+playersAreInitialized();
+
 var lastTime = Date.now();
 var deltaTime = 0;
 // called every frame
@@ -47,6 +50,8 @@ function Tick(){
         player.update();
         hitboxes[1].render();
     })
+    players[0].health -= 1;
+    UpdatePlayerHealth(players[0])
 }
 let gameLoop = setInterval(Tick, timeForOneFrame);
 

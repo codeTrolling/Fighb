@@ -20,7 +20,6 @@ function UpdatePlayerHealth(playerObject){
 
     player.hpBar.style.width = (player.obj.health / player.maxHp) * 100 + "%";
     player.takenHpBar.style.width = (player.obj.health / player.maxHp) * 100 + "%";
-    console.log((player.obj.health / player.maxHp) * 100 + "%");
 
 }
 

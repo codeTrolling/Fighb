@@ -37,12 +37,21 @@ class Player extends Entity{
         // which part of the attack should happen or in other words how much the attack has progressed.
         this.attackIndex = 0;
         this.timeoutForAttackIndexReset;
+
+        this.canMove = true;
     }
 
     // used to render the player. Should be called every frame;
     render(){
         ctx.fillStyle = "blue";
         ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    movementInput(ms){
+        if(!this.canMove || this.isAttacking){
+            return;
+        }
+        this.velocity.x = ms * this.moveSpeed;
     }
 
     moveX(){

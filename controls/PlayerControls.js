@@ -50,19 +50,23 @@ let playerTwoAttackTimeout;
 // keydown fires when the key is continuously being pressed down
 document.addEventListener("keydown", (e) =>{
     if(e.key === keybinds.playerOne.moveLeft){
-        players[0].velocity.x = -1 * players[0].moveSpeed;
+        //players[0].velocity.x = -1 * players[0].moveSpeed;
+        players[0].movementInput(-1)
         // need to come at some point when rotation is introduced and change argument based on rotation
         playerOneMovementTimeout = handleMovementInputChain('b', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerOne.moveRight){
-        players[0].velocity.x = 1 * players[0].moveSpeed;
+        //players[0].velocity.x = 1 * players[0].moveSpeed;
+        players[0].movementInput(1)
         playerOneMovementTimeout = handleMovementInputChain('f', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerTwo.moveLeft){
-        players[1].velocity.x = -1 * players[0].moveSpeed;
+        //players[1].velocity.x = -1 * players[0].moveSpeed;
+        players[1].movementInput(-1)
         playerTwoMovementTimeout = handleMovementInputChain('f', playerTwoMovementInputs, playerTwoMovementTimeout);
     }else if(e.key === keybinds.playerOne.moveRight){
-        players[1].velocity.x = 1 * players[0].moveSpeed;
+        //players[1].velocity.x = 1 * players[0].moveSpeed;
+        players[1].movementInput(1)
         playerTwoMovementTimeout = handleMovementInputChain('b', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
 

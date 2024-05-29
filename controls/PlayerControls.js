@@ -9,8 +9,13 @@ let keybinds = {
         isJumping: false,
         crouch: "s",
         // currently does nothing as crouching function is non-existent in player class
-        isCrouching: false
+        isCrouching: false,
         // will add attacks later
+
+        attackOne: "u",
+        attackTwo: "i",
+        attackThree: "j",
+        attackFour: "k"
     },
 
 
@@ -22,8 +27,13 @@ let keybinds = {
         isJumping: false,
         crouch: "ArrowDown",
         // currently does nothing as crouching function is non-existent in player class
-        isCrouching: false
+        isCrouching: false,
         // will add attacks later
+
+        attackOne: "4",
+        attackTwo: "5",
+        attackThree: "1",
+        attackFour: "2"
     }
 }
 

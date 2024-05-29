@@ -10,12 +10,13 @@ let keybinds = {
         crouch: "s",
         // currently does nothing as crouching function is non-existent in player class
         isCrouching: false,
-        // will add attacks later
 
         attackOne: "u",
         attackTwo: "i",
         attackThree: "j",
-        attackFour: "k"
+        attackFour: "k",
+        // store recently pressed button. used to prevent attack spamming by holding down the button
+        pressedAttackButtons: []
     },
 
 
@@ -28,12 +29,13 @@ let keybinds = {
         crouch: "ArrowDown",
         // currently does nothing as crouching function is non-existent in player class
         isCrouching: false,
-        // will add attacks later
 
         attackOne: "4",
         attackTwo: "5",
         attackThree: "1",
-        attackFour: "2"
+        attackFour: "2",
+        // store recently pressed button. used to prevent attack spamming by holding down the button
+        pressedAttackButtons: []
     }
 }
 
@@ -80,7 +82,7 @@ document.addEventListener("keydown", (e) =>{
         playerTwoMovementTimeout = handleMovementInputChain('b', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
 
-    console.log(playerOneMovementInputs)
+    console.log(playerTwoMovementInputs)
 })
 
 // keyup fires when the key stops being pressed
@@ -112,7 +114,64 @@ document.addEventListener("keyup", (e) =>{
     else if(e.key === keybinds.playerTwo.crouch){
         keybinds.playerTwo.isCrouching = false;
     }
+
+
+
+    // attacks
+    // remove pressed buttons from the array. look at keybinds.playerOne.pressedAttackButtons
+    else if(e.key === keybinds.playerOne.attackOne){
+        let index = keybinds.playerOne.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerOne.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerOne.attackTwo){
+        let index = keybinds.playerOne.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerOne.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerOne.attackThree){
+        let index = keybinds.playerOne.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerOne.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerOne.attackFour){
+        let index = keybinds.playerOne.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerOne.pressedAttackButtons.splice(index, 1);
+        }
+    }
+
+    // second player
+    else if(e.key === keybinds.playerTwo.attackOne){
+        let index = keybinds.playerTwo.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerTwo.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerTwo.attackTwo){
+        let index = keybinds.playerTwo.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerTwo.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerTwo.attackThree){
+        let index = keybinds.playerTwo.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerTwo.pressedAttackButtons.splice(index, 1);
+        }
+    }
+    else if(e.key === keybinds.playerTwo.attackFour){
+        let index = keybinds.playerTwo.pressedAttackButtons.findIndex(e.key);
+        if(index != -1){
+            keybinds.playerTwo.pressedAttackButtons.splice(index, 1);
+        }
+    }
 })
+
+
 
 // keypress fires when the key is pressed down
 document.addEventListener("keypress", (e) =>{
@@ -132,7 +191,61 @@ document.addEventListener("keypress", (e) =>{
         keybinds.playerOne.isCrouching = true;
         playerTwoMovementTimeout = handleMovementInputChain('d', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
-    console.log(playerOneMovementInputs)
+
+
+    switch(e.key){
+        case keybinds.playerOne.attackOne: 
+            if(!keybinds.playerOne.pressedAttackButtons.includes(e.key)){
+                playerOneAttackTimeout = handleAttackInputChain();
+                keybinds.playerOne.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerOne.attackTwo:
+            if(!keybinds.playerOne.pressedAttackButtons.includes(e.key)){
+                playerOneAttackTimeout = handleAttackInputChain();
+                keybinds.playerOne.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerOne.attackThree:
+            if(!keybinds.playerOne.pressedAttackButtons.includes(e.key)){
+                playerOneAttackTimeout = handleAttackInputChain();
+                keybinds.playerOne.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerOne.attackFour:
+            if(!keybinds.playerOne.pressedAttackButtons.includes(e.key)){
+                playerOneAttackTimeout = handleAttackInputChain();
+                keybinds.playerOne.pressedAttackButtons.push(e.key);
+            }
+            break;
+
+        // second player
+         case keybinds.playerTwo.attackOne: 
+            if(!keybinds.playerTwo.pressedAttackButtons.includes(e.key)){
+                playerTwoAttackTimeout = handleAttackInputChain();
+                keybinds.playerTwo.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerTwo.attackTwo:
+            if(!keybinds.playerTwo.pressedAttackButtons.includes(e.key)){
+                playerTwoAttackTimeout = handleAttackInputChain();
+                keybinds.playerTwo.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerTwo.attackThree:
+            if(!keybinds.playerTwo.pressedAttackButtons.includes(e.key)){
+                playerTwoAttackTimeout = handleAttackInputChain();
+                keybinds.playerTwo.pressedAttackButtons.push(e.key);
+            }
+            break;
+        case keybinds.playerTwo.attackFour:
+            if(!keybinds.playerTwo.pressedAttackButtons.includes(e.key)){
+                playerTwoAttackTimeout = handleAttackInputChain();
+                keybinds.playerTwo.pressedAttackButtons.push(e.key);
+            }
+            break;
+        default: break;
+    }
 })
 
 // this is essentially a while(true) loop. this is used because setInterval runs asynchronously so that the program doesn't block here.
@@ -149,8 +262,15 @@ function handleMovementInputChain(action, playerMovementInputs, playerMovementTi
     playerMovementInputs.push(action);
     if(playerMovementInputs.length > 5){ playerMovementInputs.splice(0, 1)};
     clearTimeout(playerMovementTimeout);
+    // instead of setting this timeout and clearing it with every function just set a timeout for removing the pressed btn
+    // like setTimeout(() => playerMovementInputs.splice(playerMovementInputs.push(action) - 1), timeToChainInputs) or sth like this
     playerMovementTimeout = setTimeout(() => {
         playerMovementInputs.splice(0, 5);
     }, timeToChainInputs);
     return playerMovementTimeout
+}
+
+
+function handleAttackInputChain(){
+
 }

@@ -46,10 +46,10 @@ const timeToChainInputs = timeForOneFrame * 9;
 // used for combos
 // inputs are: f-forward, b-backward, d-down, u-up
 let playerOneMovementInputs = [];
-let playerOneMovementTimeout;
+let playerOneMovementTimeout = [];
 // inputs are: '1', '2', '3', '4' (as chars not numbers)
 let playerOneAttackInputs = [];
-let playerOneAttackTimeout;
+let playerOneAttackTimeout = [];
 // the inputs in these comments do not mean these are the keybinds. these are what the game understands
 
 let playerTwoMovementInputs = [];
@@ -65,24 +65,24 @@ document.addEventListener("keydown", (e) =>{
         //players[0].velocity.x = -1 * players[0].moveSpeed;
         players[0].movementInput(-1)
         // need to come at some point when rotation is introduced and change argument based on rotation
-        playerOneMovementTimeout = handleMovementInputChain('b', playerOneMovementInputs, playerOneMovementTimeout);
+        handleMovementInputChain('b', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerOne.moveRight){
         //players[0].velocity.x = 1 * players[0].moveSpeed;
         players[0].movementInput(1)
-        playerOneMovementTimeout = handleMovementInputChain('f', playerOneMovementInputs, playerOneMovementTimeout);
+        handleMovementInputChain('f', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerTwo.moveLeft){
         //players[1].velocity.x = -1 * players[0].moveSpeed;
         players[1].movementInput(-1)
-        playerTwoMovementTimeout = handleMovementInputChain('f', playerTwoMovementInputs, playerTwoMovementTimeout);
+        handleMovementInputChain('f', playerTwoMovementInputs, playerTwoMovementTimeout);
     }else if(e.key === keybinds.playerOne.moveRight){
         //players[1].velocity.x = 1 * players[0].moveSpeed;
         players[1].movementInput(1)
-        playerTwoMovementTimeout = handleMovementInputChain('b', playerTwoMovementInputs, playerTwoMovementTimeout);
+        handleMovementInputChain('b', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
 
-    console.log(playerTwoMovementInputs)
+    console.log(playerOneMovementInputs)
 })
 
 // keyup fires when the key stops being pressed
@@ -177,19 +177,19 @@ document.addEventListener("keyup", (e) =>{
 document.addEventListener("keypress", (e) =>{
     if(e.key === keybinds.playerOne.jump){
         keybinds.playerOne.isJumping = true;
-        playerOneMovementTimeout = handleMovementInputChain('u', playerOneMovementInputs, playerOneMovementTimeout);
+        handleMovementInputChain('u', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerOne.crouch){
         keybinds.playerOne.isCrouching = true;
-        playerOneMovementTimeout = handleMovementInputChain('d', playerOneMovementInputs, playerOneMovementTimeout);
+        handleMovementInputChain('d', playerOneMovementInputs, playerOneMovementTimeout);
     }
     else if(e.key === keybinds.playerTwo.jump){
         keybinds.playerOne.isJumping = true;
-        playerTwoMovementTimeout = handleMovementInputChain('u', playerTwoMovementInputs, playerTwoMovementTimeout);
+        handleMovementInputChain('u', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
     else if(e.key === keybinds.playerTwo.crouch){
         keybinds.playerOne.isCrouching = true;
-        playerTwoMovementTimeout = handleMovementInputChain('d', playerTwoMovementInputs, playerTwoMovementTimeout);
+        handleMovementInputChain('d', playerTwoMovementInputs, playerTwoMovementTimeout);
     }
 
 
@@ -260,14 +260,19 @@ setInterval(()=>{
 function handleMovementInputChain(action, playerMovementInputs, playerMovementTimeout){
     if(typeof(action) != "string"){ throw "Invalid argument. Functions takes a char"; }
     playerMovementInputs.push(action);
-    if(playerMovementInputs.length > 5){ playerMovementInputs.splice(0, 1)};
-    clearTimeout(playerMovementTimeout);
+    playerMovementTimeout.push(setTimeout(() => {playerMovementInputs.splice(0, 1)}, timeToChainInputs));
+    if(playerMovementInputs.length > 5){ 
+        playerMovementInputs.splice(0, 1);
+        clearTimeout(playerMovementTimeout[0]);
+        playerMovementTimeout.splice(0, 1);
+    };
+    // clearTimeout(playerMovementTimeout);
     // instead of setting this timeout and clearing it with every function just set a timeout for removing the pressed btn
     // like setTimeout(() => playerMovementInputs.splice(playerMovementInputs.push(action) - 1), timeToChainInputs) or sth like this
-    playerMovementTimeout = setTimeout(() => {
-        playerMovementInputs.splice(0, 5);
-    }, timeToChainInputs);
-    return playerMovementTimeout
+    // playerMovementTimeout = setTimeout(() => {
+    //     playerMovementInputs.splice(0, 5);
+    // }, timeToChainInputs);
+
 }
 
 

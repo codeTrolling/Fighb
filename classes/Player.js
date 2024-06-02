@@ -37,6 +37,11 @@ class Player extends Entity{
         // which part of the attack should happen or in other words how much the attack has progressed.
         this.attackIndex = 0;
         this.timeoutForAttackIndexReset;
+        // stored in order to interrupt the attack going off if the player gets hit before the attack happens
+        this.activateHitboxForAttackTimeout;
+        this.stopAttackTimeout;
+        // the attack that's being executed right now
+        this.currentExecutingAttack;
 
         this.canMove = true;
     }
@@ -68,7 +73,7 @@ class Player extends Entity{
         }
     }
 
-    // gravity. Make the character constantly fall towards the ground.
+
     gravityEffect(){
         if(!this.isGrounded){
             // this is a formula i found online. don't question it. TEMP VALUE: this.y before everything else. not used right now though
@@ -97,38 +102,85 @@ class Player extends Entity{
 
 
     // Make sure that there is no undefined Attack class properties. This function does not check for these things in order to avoid making useless instructions every time an attack is done
-    // this function will try to attack and handle buffering. If buffering occurs it will call attack() when appropriate
-    // atkString is the attack string. It is how it is determined which attack can be used.
-    attackOrBuffer(atkString){
+    // this function will try to attack and handle buffering.
+    // reminder: try to refactor. this is not optimazed!
+    attackOrBuffer(atkChain, movementChain){
         if(this.bufferedAttack != ""){return;}
-        if(this.availableAttacks.length > 0){
-            for(let i = 0; i < this.availableAttacks.length; i++){
-                if(atkString == this.availableAttacks[i].attackString[this.attackIndex]){
+        for(let i = 0; i < this.allAttacks.length; i++){
+                
+            let mvmntChain = [...movementChain];
+            for(let j = 0; j < movementChain.length; j++){
+                let movementString = mvmntChain.join("");
+                mvmntChain.splice(0, 1);
+                let atkString = movementString + atkChain;
+                if(atkString == this.allAttacks[i].attackString[this.attackIndex]){
 
-                    const noBufferAttackCd = Date.now() - timeForOneFrame * this.availableAttacks[i].frames[this.attackIndex];
-                    const bufferAttackCd = Date.now() - timeForOneFrame * (this.availableAttacks[i].frames[this.attackIndex] - this.availableAttacks[i].bufferFrames[this.attackIndex]);
+                    const noBufferAttackCd = Date.now() - timeForOneFrame * this.allAttacks[i].frames[this.attackIndex];
+                    const bufferAttackCd = Date.now() - timeForOneFrame * (this.allAttacks[i].frames[this.attackIndex] - this.allAttacks[i].bufferFrames[this.attackIndex]);
                     // no buffering
                     if(noBufferAttackCd > this.timeOfLastAttack){
                         // just use the attack here
                         this.isAttacking = true;
+                        let currentAtk = this.allAttacks[i];
+                        this.currentExecutingAttack = currentAtk;
+                        // play animation at some point
+
+                        currentAtk.hitboxToUse.setRelativePosition(currentAtk.hitboxPositions[attackIndex][0], currentAtk.hitboxPositions[attackIndex][1]);
+                        currentAtk.hitboxToUse.width = currentAtk.hitboxWidths[this.attackIndex];
+                        currentAtk.hitboxToUse.height = currentAtk.hitboxHeights[this.attackIndex];
+                        this.activateHitboxForAttackTimeout = setTimeout(() => {currentAtk.hitboxToUse.isActive = true}, currentAtk.windupFrames[this.attackIndex] * timeForOneFrame);
+                        this.stopAttackTimeout = setTimeout(this.stopAttack, currentAtk.frames[this.attackIndex] * timeForOneFrame);
+
+
                         this.attackIndex++;
                     }
                     // buffering occurs
                     else if(bufferAttackCd > this.timeOfLastAttack){
                         // setTimeout which calls this function again after enough time has passed
                         const timeUntilCanAttack = this.timeOfLastAttack - noBufferAttackCd;
-                        bufferTimout = setTimeout(() => {this.bufferedAttack = atkString; this.attackOrBuffer(this.bufferedAttack)}, timeUntilCanAttack)
+                        bufferTimout = setTimeout(() => {this.bufferedAttack = atkChain; this.waitForAttackBuffer(atkChain, movementChain)}, timeUntilCanAttack)
                     }
+                    // the comment below is outdated 
                     // the idea here is to setTimeout to reset attackIndex after the attack's frames + a global variable which contains the time given to continue a combo have passed.
                     // Check if such a timeout already exists though
                     // timeoutForAttackIndexReset = setTimeout(()=>{})
+                    // this comment is outdated ^
+                    // this needs proper testing to make sure it works correctly. might reset index earlier due to buffer. if so use the resetAttackIndexAfterTime(timeoutTime) function
+                    if(timeoutForAttackIndexReset){
+                        clearTimeout(timeoutForAttackIndexReset);
+                    }
+                    timeoutForAttackIndexReset = setTimeout(() => {
+                        this.attackIndex = 0;
+                    }, this.allAttacks[i].frames[this.attackIndex - 1] * timeForOneFrame)
 
-                }
-                else{
-                    this.availableAttacks.splice(i, 1);
+                    return;
                 }
             }
         }
+    }
+
+
+
+    waitForAttackBuffer(atkChain, movementChain){
+        this.bufferedAttack = "";
+        this.attackOrBuffer(atkChain, movementChain);
+    }
+
+
+    resetAttackIndexAfterTime(timeoutTime){
+        if(timeoutForAttackIndexReset){
+            clearTimeout(timeoutForAttackIndexReset);
+        }
+        timeoutForAttackIndexReset = setTimeout(() => {
+            this.attackIndex = 0;
+        }, timeoutTime)
+    }
+
+
+    stopAttack(){
+        this.currentExecutingAttack.hitboxToUse.isActive = false;
+        this.isAttacking = false;
+        this.currentExecutingAttack = null; // will this break due to shallow copies? check later!
     }
 
 

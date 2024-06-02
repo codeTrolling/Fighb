@@ -4,7 +4,7 @@ import { FindHitbox } from "../workingWithEntities/FindEntities.js";
 class Attack{
     // everything is an array
     constructor(attackString=[""], damageValues=[0], damageValuesOnBlock=[0], counterHitDamageValues=[0], enemyFramesOnHit=[0], enemyFramesOnBlock=[0], frames=[0], bufferFrames=[0], hyperarmor=false, hitboxPositions=[[0,0]],
-        hitboxWidths=[0], hitboxHeights=[0], hitboxToUse=undefined, knockbackDirX=[0], knockbackDirY=[0]
+        hitboxWidths=[0], hitboxHeights=[0], hitboxToUse=undefined, knockbackDirX=[0], knockbackDirY=[0], animations=[], windupFrames=[0], attackType=["h"]
     ){
         this.attackString = attackString;
         this.damageValues = damageValues;
@@ -25,6 +25,11 @@ class Attack{
         this.hitboxWidths = hitboxWidths;
         this.knockbackDirX = knockbackDirX;
         this.knockbackDirY = knockbackDirY;
+        // make setters for everything under this comment!!!
+        this.animations = animations;
+        this.windupFrames = windupFrames;
+        // high (h) mid (m) or low (l)
+        this.attackType = attackType;
     }
 
 
@@ -122,13 +127,15 @@ class Attack{
     // this should be an object of type Hitbox
     setHitboxToUse(hitbox){
         this.hitboxToUse = hitbox;
+        hitbox.isActive = false;
+        hitbox.isSolid = false;
     }
 
     // use hitbox with this name{
     setHitboxToUseName(name){
         let hitbox = FindHitbox(name);
         if(hitbox != -1){
-            this.hitboxToUse = hitbox;
+            this.setHitboxToUse(hitbox);
         }
     }
     

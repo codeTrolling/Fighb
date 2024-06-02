@@ -25,6 +25,9 @@ class Player extends Entity{
         // usually stores Hitbox objects
         this.attachedElements = [];
         this.isJumping = false;
+        this.isCrouching = false;
+        // -1 means the player is looking right and 1 - left
+        this.rotation = -1;
         // stores Attack objects
         this.allAttacks = [];
         // changes dynamically based on which attacks can be used. Basically if you have an attack "a b c" but the player's first action is 'b' that means the "a b c" attack will not be available
@@ -34,6 +37,7 @@ class Player extends Entity{
         this.bufferedAttack = "";
         this.bufferTimout;
         this.isAttacking = false;
+        this.isBlocking = true;
         // which part of the attack should happen or in other words how much the attack has progressed.
         this.attackIndex = 0;
         this.timeoutForAttackIndexReset;
@@ -43,6 +47,7 @@ class Player extends Entity{
         // the attack that's being executed right now
         this.currentExecutingAttack;
 
+        this.knockbackTimeout;
         this.canMove = true;
     }
 
@@ -105,7 +110,7 @@ class Player extends Entity{
     // this function will try to attack and handle buffering.
     // reminder: try to refactor. this is not optimazed!
     attackOrBuffer(atkChain, movementChain){
-        if(this.bufferedAttack != ""){return;}
+        if(this.bufferedAttack != "" || !this.canMove){return;}
         for(let i = 0; i < this.allAttacks.length; i++){
                 
             let mvmntChain = [...movementChain];
@@ -121,6 +126,7 @@ class Player extends Entity{
                     if(noBufferAttackCd > this.timeOfLastAttack){
                         // just use the attack here
                         this.isAttacking = true;
+                        this.timeOfLastAttack = Date.now();
                         let currentAtk = this.allAttacks[i];
                         this.currentExecutingAttack = currentAtk;
                         // play animation at some point
@@ -181,6 +187,63 @@ class Player extends Entity{
         this.currentExecutingAttack.hitboxToUse.isActive = false;
         this.isAttacking = false;
         this.currentExecutingAttack = null; // will this break due to shallow copies? check later!
+    }
+
+
+    getHit(attackType, damageToTake, damageToTakeOnBlock, knockbackDir, framesOnHit, framesOnBlock, framesOnCounterHit){
+        if(this.isAttacking){
+            if(!this.currentExecutingAttack.hyperarmor){
+                clearTimeout(this.bufferTimout);
+                this.bufferedAttack = "";
+                clearTimeout(this.stopAttackTimeout);
+                this.stopAttack();
+                this.getKnockedBack(knockbackDir.x, knockbackDir.y, framesOnCounterHit);
+                // damageToTake + 1 because counterHit adds 1 damage to the attack.
+                this.reduceHp(damageToTake + 1);
+            }
+            else{
+                this.reduceHp(damageToTake);
+            }
+        }
+        else if(this.isBlocking){
+            if((this.isCrouching && attackType == 'm') || !this.isCrouching && attackType == 'l'){
+                this.getKnockedBack(knockbackDir.x, knockbackDir.y, framesOnHit);
+                this.reduceHp(damageToTake);
+            }
+            else{
+                this.canMove = false;
+                knockbackTimeout = setTimeout(() => {this.canMove = true}, framesOnBlock * timeForOneFrame)
+                this.reduceHp(damageToTakeOnBlock);
+            }
+        }
+        else{
+            this.getKnockedBack(knockbackDir.x, knockbackDir.y, framesOnHit);
+            this.reduceHp(damageToTake);
+        }
+    }
+
+    reduceHp(damage){
+        if(this.health - damage <= 0){
+            // die() or sth
+
+            // = 0 so that the UI doesn't look weird 
+            this.health = 0
+            return;
+        }
+        this.health -= damage;
+    }
+
+
+    getKnockedBack(x, y, frames){
+        // play some animation
+
+        this.canMove = false;
+        if(knockbackTimeout){
+            clearTimeout(knockbackTimeout);
+        }
+        knockbackTimeout = setTimeout(() => {this.canMove = true}, frames * timeForOneFrame);
+        this.velocity.x = x * this.rotation;
+        this.velocity.y = y;
     }
 
 

@@ -3,6 +3,7 @@ import { fpsCap, deltaTime, timeForOneFrame } from "../main.js";
 import { SquareHitbox } from "./Hitboxes.js";
 import { Attack } from "./Attack.js";
 import Entity from "./Entity.js";
+import Animation from "./Animation.js";
 
 
 let playerCount = 0;
@@ -49,6 +50,27 @@ class Player extends Entity{
 
         this.knockbackTimeout;
         this.canMove = true;
+
+
+        this.currentAnimationFrame = 0;
+        // attack animations are not stored here but are stored in the attack object itself.
+        this.allAnimations = {
+            idle: new Animation(/*params*/),
+            // curly braces are here to remove the errors while working on making the animations
+            jump: {
+            },
+            move: {
+            },
+            crouch:{
+            },
+            knockup: {
+            },
+            knockback: {
+            }
+        }
+
+        this.currentPlayingAnimation = this.allAnimations.idle;
+
     }
 
     // used to render the player. Should be called every frame;

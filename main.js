@@ -15,6 +15,8 @@ let entities = [];
 let players = [];
 // keep all hitboxes here. Looking for collision will loop over this array
 let hitboxes = [];
+// keep all animations here
+let animations = [];
 
 players.push(new Player({
     x: 50,
@@ -54,4 +56,4 @@ function Tick(){
 }
 let gameLoop = setInterval(Tick, timeForOneFrame);
 
-export { fpsCap, players, hitboxes, entities, deltaTime, timeForOneFrame };
+export { fpsCap, players, hitboxes, entities, deltaTime, timeForOneFrame, animations };

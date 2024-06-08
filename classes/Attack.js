@@ -2,7 +2,7 @@ import { fpsCap } from "../main.js";
 import { FindHitbox } from "../workingWithEntities/FindEntities.js";
 
 class Attack{
-    // everything is an array
+    // everything is an array. each index is the value for the current stage of the attack. imagine you have an attack a + a + b - 3 hits in total.
     constructor(attackString=[""], damageValues=[0], damageValuesOnBlock=[0], counterHitDamageValues=[0], enemyFramesOnHit=[0], enemyFramesOnBlock=[0], frames=[0], bufferFrames=[0], hyperarmor=false, hitboxPositions=[[0,0]],
         hitboxWidths=[0], hitboxHeights=[0], hitboxToUse=undefined, knockbackDirX=[0], knockbackDirY=[0], animations=[], windupFrames=[0], attackType=["h"]
     ){
@@ -25,7 +25,6 @@ class Attack{
         this.hitboxWidths = hitboxWidths;
         this.knockbackDirX = knockbackDirX;
         this.knockbackDirY = knockbackDirY;
-        // make setters for everything under this comment!!!
         this.animations = animations;
         this.windupFrames = windupFrames;
         // high (h) mid (m) or low (l)
@@ -174,6 +173,40 @@ class Attack{
     }
 
 
+    setAnimations(animations){
+        if(!animations || !Array.isArray(animations)) { throw "Invalid arguments." }
+        this.animations = animations;
+    }
+
+    setAnimationsByName(animations){
+        let anims = [];
+        animations.forEach((a) => {
+            let anim = FindAnimation(a);
+            if(anim == -1){ throw `Animation with name ${a} wasn't found` }
+            anims.push(anim);
+        })
+        this.setAnimations(anims);
+    }
+
+
+    setWindupFrames(frames){
+        if(!frames || !Array.isArray(frames)) { throw "Invalid arguments." };
+        this.windupFrames = frames;
+    }
+
+
+
+    setAttackTypes(types){
+        if(!types || !Array.isArray(types)) { throw "Invalid arguments. "}
+        types.forEach((type) => {
+            if(type !== "h" && type !== "m" && type !== "l") {
+                throw "Invalid arguments."
+            }
+        })
+        this.attackType = types;
+    }
+
+
     // Sets the attack string at a given index. This will change the buttons needed to perform the specified attack.
     setAttackStringAtIndex(index, value){
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
@@ -259,6 +292,30 @@ class Attack{
         if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range." };
         if(!value) { throw "Cannot set height to undefined" };
         this.hitboxHeights[index] = value;
+    }
+
+
+    setAnimationAtIndex(index, animation){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range. "}
+        this.animations[index] = animation;
+    }
+
+    setAnimationByNameAtIndex(index, animation){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range. "}
+        this.setAnimationAtIndex(index, FindAnimation(animation));
+    }
+
+
+    setWindupFrameAtIndex(index, frame){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range. "}
+        if(!frame) { throw "Invalid arguments." };
+        this.windupFrames[index] = frame;
+    }
+
+    setAttackTypeAtIndex(index, type){
+        if(!index || index < 0 || index > this.attackCount - 1) { throw "Index is out of range. "}
+        if(!type || (type !== "h" && type !== "m" && type !== "l")) { throw "Invalid arguments." };
+        this.attackType[index] = type;
     }
     
 }

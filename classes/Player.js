@@ -32,6 +32,7 @@ class Player extends Entity{
         // stores Attack objects
         this.allAttacks = [];
         // changes dynamically based on which attacks can be used. Basically if you have an attack "a b c" but the player's first action is 'b' that means the "a b c" attack will not be available
+        // will probably remove this in the future actually !!!
         this.availableAttacks = [];
         this.timeOfLastAttack = 0;
         this.canBufferAttack = false;
@@ -87,10 +88,6 @@ class Player extends Entity{
     }
 
     moveX(){
-        // let playerPositionAfterMoving = this.x + this.velocity.x + this.width;
-        // if(playerPositionAfterMoving < canvas.width && this.x + this.velocity.x > 0){
-        //     this.x += this.velocity.x;
-        // }
         this.x += this.velocity.x * deltaTime;
         if(this.x + this.width > canvas.width){
             this.x = canvas.width - this.width;
@@ -103,8 +100,6 @@ class Player extends Entity{
 
     gravityEffect(){
         if(!this.isGrounded){
-            // this is a formula i found online. don't question it. TEMP VALUE: this.y before everything else. not used right now though
-            // this.velocity.y = this.velocity.y * this.time + 0.5 * 9.81*(this.time*this.time);
             this.timeFalling += 100;
             //this.timeFalling += (1/fpsCap) 
             this.velocity.y += this.timeFalling * deltaTime * this.gravityMultiplyer;
@@ -168,11 +163,6 @@ class Player extends Entity{
                         const timeUntilCanAttack = this.timeOfLastAttack - noBufferAttackCd;
                         bufferTimout = setTimeout(() => {this.bufferedAttack = atkChain; this.waitForAttackBuffer(atkChain, movementChain)}, timeUntilCanAttack)
                     }
-                    // the comment below is outdated 
-                    // the idea here is to setTimeout to reset attackIndex after the attack's frames + a global variable which contains the time given to continue a combo have passed.
-                    // Check if such a timeout already exists though
-                    // timeoutForAttackIndexReset = setTimeout(()=>{})
-                    // this comment is outdated ^
                     // this needs proper testing to make sure it works correctly. might reset index earlier due to buffer. if so use the resetAttackIndexAfterTime(timeoutTime) function
                     if(timeoutForAttackIndexReset){
                         clearTimeout(timeoutForAttackIndexReset);

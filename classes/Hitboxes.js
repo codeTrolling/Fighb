@@ -111,12 +111,10 @@ class Hitbox extends Entity{
                                         if(depthX > 0){
                                             // Left side collision
                                             this.attachment.x = hitbox.x + hitbox.width;
-                                            console.log("left collision");
                                         }
                                         else{
                                             // Right side collision
                                             this.attachment.x = hitbox.x - this.attachment.width;
-                                            console.log("right collision", this.attachment.timeFalling);
                                         }
                                     }
                                     else{
@@ -127,7 +125,6 @@ class Hitbox extends Entity{
                                             if(this.attachment.velocity.y < 0){
                                                 this.attachment.velocity.y = 0;
                                             }
-                                            console.log("top collision");
                                         }
                                         else{
                                             // Bottom side collision
@@ -137,7 +134,6 @@ class Hitbox extends Entity{
                                                 this.attachment.velocity.y = 0;
                                                 this.attachment.timeFalling = 0;
                                             }
-                                            console.log("bot collision")
                                         }
                                     }   
                                 }
